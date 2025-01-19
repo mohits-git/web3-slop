@@ -9,10 +9,15 @@
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "chai": "4",
+    "dotenv": "^16.4.7",
     "ethers": "^6.13.5",
     "hardhat": "^2.22.18",
+    "html-webpack-plugin": "^5.6.3",
+    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
-    "typechain": "^8.3.2"
+    "typechain": "^8.3.2",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.0",
