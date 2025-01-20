@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import { EthereumProvider } from "hardhat/types";
+import Counter from "../artifacts/contracts/Counter.sol/Counter.json"
 
 function getEth(): EthereumProvider {
   // @ts-ignore
@@ -36,29 +37,34 @@ async function run() {
   console.log(contractAddress);
   const contract = new ethers.Contract(
     contractAddress,
-    [
-      "function count() public",
-      "function getCounter() public view returns (uint32)",
-    ],
+    Counter.abi,
     signer
     //  provider
   );
 
   const el = document.createElement("div");
-  async function setCounter() {
-    el.innerHTML = (await contract.getCounter()).toString();
+
+  async function setCounter(count?: number) {
+    el.innerHTML = count ?? (await contract.getCounter()).toString();
   }
   setCounter();
 
   const button = document.createElement("button");
   button.innerHTML = "increment";
   button.onclick = async function () {
-    const tx = await contract.count();
-    const receipt = await tx.wait();
-    if (receipt.status === 1) {
-      await setCounter();
-    }
+    await contract.count();
+    // const tx = await contract.count();
+    //const receipt = await tx.wait();
+    //if (receipt.status === 1) {
+    //  await setCounter();
+    //}
   };
+
+  contract.on(contract.filters.CounterInc(), function(event) {
+    const args = event.args;
+    const count = args.getValue("counter")
+    setCounter(count);
+  });
 
   document.body.appendChild(el);
   document.body.appendChild(button);
