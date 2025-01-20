@@ -29,8 +29,8 @@ async function run() {
     throw new Error("Please let me take your money");
   }
 
-//  const provider = new ethers.BrowserProvider(getEth());
-  const signer = await (new ethers.BrowserProvider(getEth())).getSigner();
+  // const provider = new ethers.BrowserProvider(getEth());
+  const signer = await new ethers.BrowserProvider(getEth()).getSigner();
 
   const contractAddress = process.env.CONTRACT_ADDRESS as string;
   console.log(contractAddress);
@@ -41,7 +41,7 @@ async function run() {
       "function getCounter() public view returns (uint32)",
     ],
     signer
-  //  provider
+    //  provider
   );
 
   const el = document.createElement("div");
@@ -54,8 +54,10 @@ async function run() {
   button.innerHTML = "increment";
   button.onclick = async function () {
     const tx = await contract.count();
-    await tx.wait();
-    setCounter();
+    const receipt = await tx.wait();
+    if (receipt.status === 1) {
+      await setCounter();
+    }
   };
 
   document.body.appendChild(el);
