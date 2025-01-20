@@ -29,17 +29,37 @@ async function run() {
     throw new Error("Please let me take your money");
   }
 
-  const provider = new ethers.BrowserProvider(getEth());
+//  const provider = new ethers.BrowserProvider(getEth());
+  const signer = await (new ethers.BrowserProvider(getEth())).getSigner();
 
+  const contractAddress = process.env.CONTRACT_ADDRESS as string;
+  console.log(contractAddress);
   const contract = new ethers.Contract(
-    "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+    contractAddress,
     [
-      "function hello() public pure returns (string memory)"
+      "function count() public",
+      "function getCounter() public view returns (uint32)",
     ],
-    provider
+    signer
+  //  provider
   );
 
-  document.body.innerHTML = await contract.hello();
+  const el = document.createElement("div");
+  async function setCounter() {
+    el.innerHTML = (await contract.getCounter()).toString();
+  }
+  setCounter();
+
+  const button = document.createElement("button");
+  button.innerHTML = "increment";
+  button.onclick = async function () {
+    const tx = await contract.count();
+    await tx.wait();
+    setCounter();
+  };
+
+  document.body.appendChild(el);
+  document.body.appendChild(button);
 }
 
 run();
