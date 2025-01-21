@@ -6,7 +6,7 @@ async function deploy() {
   const Counter = await ethers.getContractFactory("Counter");
   const counter = await Counter.deploy();
   await counter.waitForDeployment();
-
+  console.log(await counter.getAddress()); // This will print the contract address and other details
   return counter;
 }
 
