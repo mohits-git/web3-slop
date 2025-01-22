@@ -1,8 +1,8 @@
 {
-  "name": "jpegdegens",
+  "name": "web3-slop",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:mohits-git/jpegdegens.git",
+  "repository": "git@github.com:mohits-git/web3-slop.git",
   "author": "mohits-git <152606488+mohits-git@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
