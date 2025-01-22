@@ -10,23 +10,24 @@ async function deploy(name: "A" | "B", ...args: any) {
   return fallback;
 }
 
+async function printStorage(contract: B, name: string, count: number) {
+  for (let i = 0; i < count; i++) {
+    console.log(
+      name,
+      i,
+      await ethers.provider.getStorage(await contract.getAddress(), i)
+    );
+  }
+}
+
 async function call() {
-  const a = await deploy("A") as A;
-  const b = await deploy("B", await a.getAddress()) as B;
+  const a = (await deploy("A")) as A;
+  const b = (await deploy("B", await a.getAddress())) as B;
 
-  console.log("A", await a.getA());
-  console.log("B", await b.getB());
-  console.log("-----------------------")
-
-  await a.setA(42);
-  console.log("A", await a.getA());
-  console.log("B", await b.getB());
-  console.log("-----------------------")
-
-  await b.setB(60);
-  console.log("A", await a.getA());
-  console.log("B", await b.getB());
-  console.log("-----------------------")
+  await printStorage(b, "B", 5);
+  await b.setB(45);
+  console.log("=========================")
+  await printStorage(b, "B", 5);
 }
 
 call().then().catch(console.error);
